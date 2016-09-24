@@ -9,13 +9,13 @@ import android.widget.CheckBox;
 
 import java.util.List;
 
-public class ListAdapter extends ArrayAdapter<ListItem> {
+public class TablesListAdapter extends ArrayAdapter<GameTable> {
 
-    public ListAdapter(Context context, int textViewResourceId) {
+    public TablesListAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
     }
 
-    public ListAdapter(Context context, int resource, List<ListItem> items) {
+    public TablesListAdapter(Context context, int resource, List<GameTable> items) {
         super(context, resource, items);
     }
 
@@ -27,10 +27,10 @@ public class ListAdapter extends ArrayAdapter<ListItem> {
         if (v == null) {
             LayoutInflater vi;
             vi = LayoutInflater.from(getContext());
-            //v = vi.inflate(R.layout.test, null);
+            v = vi.inflate(R.layout.game_table, null);
         }
 
-        ListItem p = getItem(position);
+        GameTable p = getItem(position);
 
         if (p != null) {
             /*CheckBox cb1 = (CheckBox) v.findViewById(R.id.checkBox);

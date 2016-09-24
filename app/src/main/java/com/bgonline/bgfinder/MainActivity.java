@@ -8,14 +8,19 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.bgonline.bgfinder.databinding.UserInfoBinding;
+
+import static android.R.attr.id;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -51,15 +56,28 @@ public class MainActivity extends AppCompatActivity
 
         LinearLayout l = (LinearLayout) findViewById(R.id.lay);
 
-        userInfo = new UserInfo();
+        // This will show the user info
+        /*userInfo = new UserInfo();
         populateUserInfo(userInfo);
 
         LayoutInflater inflater = LayoutInflater.from(l.getContext());
         UserInfoBinding binding = DataBindingUtil.inflate(inflater, R.layout.user_info, null, true);
         binding.setUserInfo(userInfo);
-        l.addView(binding.getRoot());
+        l.addView(binding.getRoot());*/
 
-        setContentView(R.layout.games_list);
+        // This will show the games list
+        //setContentView(R.layout.games_list);
+
+        // This will show the tables
+        LayoutInflater inflater = LayoutInflater.from(l.getContext());
+        View tablesListView = inflater.inflate(R.layout.tables_list, null);
+        ListView tablesList = (ListView)tablesListView.findViewById(R.id.tables);
+        tablesList.setAdapter(new TablesListAdapter(l.getContext(), R.layout.game_table));
+        View newTable = inflater.inflate(R.layout.game_table, null);
+        tablesList.addFooterView(newTable);
+        View newTable2 = inflater.inflate(R.layout.game_table, null);
+        tablesList.addFooterView(newTable2);
+        l.addView(tablesListView);
     }
 
     public void populateUserInfo(UserInfo userInfo) {

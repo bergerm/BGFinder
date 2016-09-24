@@ -18,4 +18,7 @@
     <string name="user_info_country">country</string>
     <string name="user_info_city">city</string>
     <string name="user_info_year_of_birth">yearOfBirth</string>
+
+    <string name="new_table_name">New Table</string>
+    <string name="tbd">TBD</string>
 </resources>

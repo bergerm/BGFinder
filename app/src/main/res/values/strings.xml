@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">BGFinder</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="unsigned_user_name">You are not logged in!</string>
+    <string name="unsigned_user_String">Please log in</string>
+
+    <string name="user_info_id">userID</string>
+    <string name="user_info_first_name">firstName</string>
+    <string name="user_info_last_name">lastName</string>
+    <string name="user_info_email">email</string>
+    <string name="user_info_bgg_account">bggAccount</string>
+    <string name="user_info_description">description</string>
+    <string name="user_info_country">country</string>
+    <string name="user_info_city">city</string>
+    <string name="user_info_year_of_birth">yearOfBirth</string>
+</resources>

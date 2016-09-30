@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="5dp"
+            android:layout_marginTop="10dp"
+            card_view:cardElevation="5dp">
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="30sp"
+                    android:text="Create New Table"
+                    android:layout_marginTop="10dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Table Name"
+                        android:textColor="@color/hint_foreground_material_light"
+                        android:textSize="18sp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="2"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/new_table_name"
+                        android:textSize="20sp"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Game"
+                        android:textColor="@color/hint_foreground_material_light"
+                        android:textSize="18sp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="2"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/new_table_game"
+                        android:textSize="20sp"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="When"
+                        android:textColor="@color/hint_foreground_material_light"
+                        android:textSize="18sp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="2"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/new_table_when"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:inputType="date"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Where"
+                        android:textColor="@color/hint_foreground_material_light"
+                        android:textSize="18sp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="2"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/new_table_where"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:inputType="date"/>
+                </LinearLayout>
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Save Table"
+                    android:layout_marginStart="5sp"
+                    android:layout_marginEnd="5sp"/>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="5dp"
+            android:layout_marginTop="10dp"
+            card_view:cardElevation="5dp">
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="30sp"
+                    android:text="Invite Players"
+                    android:layout_marginTop="10dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Player 1"
+                        android:textColor="@color/hint_foreground_material_light"
+                        android:textSize="18sp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="2"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/new_table_player1"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:inputType="date"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Player 2"
+                        android:textColor="@color/hint_foreground_material_light"
+                        android:textSize="18sp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="2"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/new_table_player2"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:inputType="date"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Player 3"
+                        android:textColor="@color/hint_foreground_material_light"
+                        android:textSize="18sp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="2"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/new_table_player3"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:inputType="date"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Player 4"
+                        android:textColor="@color/hint_foreground_material_light"
+                        android:textSize="18sp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="2"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/new_table_player4"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:inputType="date"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Player 5"
+                        android:textColor="@color/hint_foreground_material_light"
+                        android:textSize="18sp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="2"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/new_table_player5"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:inputType="date"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Player 6"
+                        android:textColor="@color/hint_foreground_material_light"
+                        android:textSize="18sp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="2"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/new_table_player6"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:inputType="date"/>
+                </LinearLayout>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Send Invitations"
+                    android:layout_marginStart="5sp"
+                    android:layout_marginEnd="5sp" />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</ScrollView>

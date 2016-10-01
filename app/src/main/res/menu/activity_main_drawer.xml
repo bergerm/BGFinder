@@ -3,9 +3,22 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_login"
+            android:icon="@drawable/ic_menu_login"
+            android:title="Log In!" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_menu_logout"
+            android:title="Log Out"
+            android:visible="false"/>
+        <item
             android:id="@+id/nav_summary"
             android:icon="@drawable/ic_menu_summary"
             android:title="Summary" />
+        <item
+            android:id="@+id/nav_new_table"
+            android:icon="@drawable/ic_menu_new_table"
+            android:title="New Table" />
         <item
             android:id="@+id/nav_tables"
             android:icon="@drawable/ic_menu_tables_list"

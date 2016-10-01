@@ -1,31 +1,42 @@
 package com.bgonline.bgfinder;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 
+import com.bgonline.bgfinder.databinding.NewTableBinding;
 import com.bgonline.bgfinder.databinding.UserInfoBinding;
 
 import static android.R.attr.id;
+import static android.R.attr.includeInGlobalSearch;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static UserInfo userInfo;
+    private static boolean isWindowChanged;
+    private Activity mainActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +44,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        isWindowChanged = false;
+
+        mainActivity = this;
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -56,28 +71,11 @@ public class MainActivity extends AppCompatActivity
 
         LinearLayout l = (LinearLayout) findViewById(R.id.lay);
 
-        // This will show the user info
-        /*userInfo = new UserInfo();
-        populateUserInfo(userInfo);
-
-        LayoutInflater inflater = LayoutInflater.from(l.getContext());
-        UserInfoBinding binding = DataBindingUtil.inflate(inflater, R.layout.user_info, null, true);
-        binding.setUserInfo(userInfo);
-        l.addView(binding.getRoot());*/
-
         // This will show the games list
-        //setContentView(R.layout.games_list);
+        //
 
         // This will show the tables
-        LayoutInflater inflater = LayoutInflater.from(l.getContext());
-        View tablesListView = inflater.inflate(R.layout.tables_list, null);
-        ListView tablesList = (ListView)tablesListView.findViewById(R.id.tables);
-        tablesList.setAdapter(new TablesListAdapter(l.getContext(), R.layout.game_table));
-        View newTable = inflater.inflate(R.layout.game_table, null);
-        tablesList.addFooterView(newTable);
-        View newTable2 = inflater.inflate(R.layout.game_table, null);
-        tablesList.addFooterView(newTable2);
-        l.addView(tablesListView);
+        /*;*/
     }
 
     public void populateUserInfo(UserInfo userInfo) {
@@ -158,26 +156,78 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        LinearLayout l = (LinearLayout) findViewById(R.id.lay);
+        final LayoutInflater inflater = LayoutInflater.from(l.getContext());
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        saveUserInfo(userInfo);
-        /*if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        //saveUserInfo(userInfo);
+        switch (id) {
+            case R.id.nav_account: {
+                l.removeAllViews();
+                userInfo = new UserInfo();
+                populateUserInfo(userInfo);
+                UserInfoBinding binding = DataBindingUtil.inflate(inflater, R.layout.user_info, null, true);
+                binding.setUserInfo(userInfo);
+                l.addView(binding.getRoot());
+                break;
+            }
 
-        } else if (id == R.id.nav_slideshow) {
+            case R.id.nav_friends: {
+                Snackbar mySnackbar = Snackbar.make(l, "Sorry, this feature is not yet implemented!" , 1000);
+                mySnackbar.show();
+                break;
+            }
 
-        } else if (id == R.id.nav_manage) {
+            case R.id.nav_games: {
+                l.removeAllViews();
+                View gameListView = inflater.inflate(R.layout.games_list, null);
+                l.addView(gameListView);
+                break;
+            }
 
-        } else if (id == R.id.nav_share) {
+            case R.id.nav_tables: {
+                l.removeAllViews();
+                View tablesListView = inflater.inflate(R.layout.tables_list, null);
+                ListView tablesList = (ListView)tablesListView.findViewById(R.id.tables);
+                tablesList.setAdapter(new TablesListAdapter(l.getContext(), R.layout.game_table));
 
-        } else if (id == R.id.nav_send) {
+                View newTable = inflater.inflate(R.layout.game_table, null);
+                tablesList.addFooterView(newTable);
+                View newTable2 = inflater.inflate(R.layout.game_table, null);
+                tablesList.addFooterView(newTable2);
 
+                l.addView(tablesListView);
+                break;
+            }
+
+            case R.id.nav_new_table: {
+                l.removeAllViews();
+                GameTable newTable = new GameTable(mainActivity.getApplicationContext(), 0);
+                NewTableBinding binding = DataBindingUtil.inflate(inflater, R.layout.new_table, null, true);
+                binding.setGameTable(newTable);
+                l.addView(binding.getRoot());
+                break;
+            }
+
+            case R.id.nav_login:
+            case R.id.nav_logout:
+            case R.id.nav_invite:
+            case R.id.nav_messages:
+            case R.id.nav_summary: {
+                Snackbar mySnackbar = Snackbar.make(l, "Sorry, this feature is not yet implemented!" , 1000);
+                mySnackbar.show();
+                break;
+            }
+
+            default:
+                break;
         }
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);*/
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }

@@ -20,15 +20,6 @@ public class GameTable {
     private String player4;
     private String player5;
     private String player6;
-    private Context context;
-
-    public Context getContext() {
-        return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
 
     public int getTableId() {
         return tableId;
@@ -120,16 +111,31 @@ public class GameTable {
     }
 
     public GameTable(Context context, int id) {
-        this.context = context;
         tableId = id;
         tableName = context.getResources().getString(R.string.new_table_name);
+        gameName = "TBD";
         location = context.getResources().getString(R.string.tbd);
         date = context.getResources().getString(R.string.tbd);
+        player1 = "me";
+        player2 = "";
+        player3 = "";
+        player4 = "";
+        player5 = "";
+        player6 = "";
+
     }
 
     public String toJson() {
         Gson gson = new Gson();
-        return gson.toJson(this);
+        String json = "";
+        try {
+            json = gson.toJson(this);
+        }
+        catch (Exception e) {
+            String ex = e.toString();
+            return "";
+        }
+        return json;
     }
 
     public static GameTable fromJson(String json) {

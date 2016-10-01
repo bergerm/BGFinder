@@ -12,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
@@ -27,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Handler;
 import android.app.AlertDialog;
@@ -54,6 +56,8 @@ public class MainActivity extends AppCompatActivity
     // objects used in different windows
     private UserInfo userInfo;
     private ArrayList<String> arrayOfGames;
+    private ArrayList<GameTable> arrayOfTables;
+    private TablesListAdapter tablesListAdapter;
 
     // used to handle navigation
     private static boolean isWindowChanged;
@@ -87,6 +91,8 @@ public class MainActivity extends AppCompatActivity
 
         LinearLayout l = (LinearLayout) findViewById(R.id.lay);
         final LayoutInflater inflater = LayoutInflater.from(l.getContext());
+        handleNavigateTables(l, inflater);
+        handleNavigateGames(l, inflater);
         handleNavigateSummary(l, inflater);
     }
 
@@ -115,10 +121,76 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void handleNavigateSummary(LinearLayout l, LayoutInflater inflater) {
+    private void handleNavigateSummary(LinearLayout l, final LayoutInflater inflater) {
         l.removeAllViews();
         View summaryView = inflater.inflate(R.layout.summary, null);
         l.addView(summaryView);
+
+        final LinearLayout mainLayout = l;
+        CardView tablesCard = (CardView) findViewById(R.id.summary_tables_card);
+        tablesCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleNavigateTables(mainLayout, inflater);
+            }
+        });
+
+        TextView tablesSummary = (TextView) summaryView.findViewById(R.id.summary_tables_card_message);
+        String tableString = "You are participating in " + arrayOfTables.size() + " tables";
+        tablesSummary.setText(tableString);
+
+        if (arrayOfTables.size() > 0) {
+            GameTable table = arrayOfTables.get(0);
+            TextView nextTableName = (TextView) summaryView.findViewById(R.id.summary_tables_card_next_game_name);
+            nextTableName.setText(table.getTableName());
+
+            TextView nextGameName = (TextView) summaryView.findViewById(R.id.summary_tables_card_next_game);
+            nextGameName.setText(table.getGameName());
+
+            TextView nextTableWhen = (TextView) summaryView.findViewById(R.id.summary_tables_card_next_game_when);
+            nextTableWhen.setText(table.getDate());
+
+            TextView nextTableWhere = (TextView) summaryView.findViewById(R.id.summary_tables_card_next_game_where);
+            nextTableWhere.setText(table.getLocation());
+        }
+
+        CardView gamesCard = (CardView) findViewById(R.id.summary_games_card);
+        gamesCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleNavigateGames(mainLayout, inflater);
+            }
+        });
+
+        TextView gamesSummary = (TextView) summaryView.findViewById(R.id.summary_games_card_text);
+        String gamesString = "You've got " + arrayOfGames.size() + " games";
+        gamesSummary.setText(gamesString);
+
+        CardView friendsCard = (CardView) findViewById(R.id.summary_friends_card);
+        friendsCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleNavigateNotImplemented(mainLayout, inflater);
+            }
+        });
+
+        TextView friendsSummary = (TextView) summaryView.findViewById(R.id.summary_friends_card_text);
+        String friendsString = "You've got 0 friends";
+        friendsSummary.setText(friendsString);
+
+        CardView messagesCard = (CardView) findViewById(R.id.summary_messages_card);
+        messagesCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleNavigateNotImplemented(mainLayout, inflater);
+            }
+        });
+
+        TextView messagesSummary = (TextView) summaryView.findViewById(R.id.summary_messages_card_message);
+        String messagesString = "You've got 0 messages";
+        friendsSummary.setText(friendsString);
+
+
         currentLayoutId = R.layout.summary;
     }
 
@@ -329,22 +401,46 @@ public class MainActivity extends AppCompatActivity
         catch (Exception e) {
             // Log here
         }
-
-        arrayOfGames.clear();
-        arrayOfGames = null;
-        return;
     }
 
     private void handleNavigateTables(LinearLayout l, LayoutInflater inflater) {
         l.removeAllViews();
+
+        String json = "";
+        try {
+            InputStream inputStream = getApplicationContext().openFileInput("arrayOfTables.json");
+
+            if (inputStream != null) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ((receiveString = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(receiveString);
+                }
+
+                inputStream.close();
+                json = stringBuilder.toString();
+            }
+        }
+        catch (Exception e) {
+            // LOG here
+        }
+
+        if (!json.equals("null") && !json.equals("")) {
+            Gson gson = new Gson();
+            arrayOfTables = gson.fromJson(json, new TypeToken<ArrayList<GameTable>>() {
+            }.getType());
+        }
+        else {
+            arrayOfTables = new ArrayList<GameTable>();
+        }
+
         View tablesListView = inflater.inflate(R.layout.tables_list, null);
         ListView tablesList = (ListView)tablesListView.findViewById(R.id.tables);
-        tablesList.setAdapter(new TablesListAdapter(l.getContext(), R.layout.game_table));
-
-        View newTable = inflater.inflate(R.layout.game_table, null);
-        tablesList.addFooterView(newTable);
-        View newTable2 = inflater.inflate(R.layout.game_table, null);
-        tablesList.addFooterView(newTable2);
+        tablesListAdapter = new TablesListAdapter(l.getContext(), R.layout.game_table, arrayOfTables);
+        tablesList.setAdapter(tablesListAdapter);
 
         l.addView(tablesListView);
 
@@ -357,6 +453,35 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        tablesList.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                final int itemId = (int) pos;
+                String tableName = arrayOfTables.get((int)itemId).getTableName();
+                String dialogString = "Remove " + tableName + "?";
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(dialogString);
+
+                // Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        arrayOfTables.remove(itemId);
+                        tablesListAdapter.notifyDataSetChanged();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+                return true;
+            }
+        });
+
         currentLayoutId = R.layout.tables_list;
     }
 
@@ -364,26 +489,46 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
+
+        String result = data.getStringExtra("RESULT");
+        if (!result.equals("SUCCESS")) {
+            return;
+        }
+
         String newTableJson=data.getStringExtra("NEW_TABLE");
         if (!newTableJson.equals("null") && !newTableJson.equals("")) {
             Gson gson = new Gson();
             GameTable newTable = gson.fromJson(newTableJson, GameTable.class);
-
+            arrayOfTables.add(newTable);
+            tablesListAdapter.notifyDataSetChanged();
         }
     }
 
 
     public void handleLeaveTables() {
-        return;
+        Gson gson = new Gson();
+        String json = gson.toJson(arrayOfTables);
+
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getApplicationContext().openFileOutput("arrayOfTables.json", Context.MODE_PRIVATE));
+            outputStreamWriter.write(json);
+            outputStreamWriter.close();
+        }
+        catch (Exception e) {
+            // Log here
+        }
     }
 
     private void handleNavigateNewTable(LinearLayout l, LayoutInflater inflater) {
-        l.removeAllViews();
+        /*l.removeAllViews();
         GameTable newTable = new GameTable(mainActivity.getApplicationContext(), 0);
         NewTableBinding binding = DataBindingUtil.inflate(inflater, R.layout.new_table, null, true);
         binding.setGameTable(newTable);
         l.addView(binding.getRoot());
-        currentLayoutId = R.layout.new_table;
+        currentLayoutId = R.layout.new_table;*/
+        handleNavigateTables(l, inflater);
+        Button newTableButton = (Button) findViewById(R.id.new_table_button);
+        newTableButton.callOnClick();
     }
 
     public void handleLeaveNewTable() {

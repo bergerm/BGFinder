@@ -19,7 +19,8 @@
             android:gravity="center_horizontal"
             android:textStyle="bold"
             android:textSize="30sp"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black"
+            android:id="@+id/game_table_name"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -71,7 +72,8 @@
                     android:text="Player1"
                     android:layout_gravity="center"
                     android:textStyle="bold"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp"
+                    android:id="@+id/game_table_player1"/>
             </LinearLayout>
 
             <LinearLayout
@@ -95,7 +97,8 @@
                     android:text="Player2"
                     android:layout_gravity="center"
                     android:textStyle="bold"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp"
+                    android:id="@+id/game_table_player2"/>
             </LinearLayout>
 
             <LinearLayout
@@ -114,7 +117,8 @@
                     android:text="Player3"
                     android:layout_gravity="center"
                     android:textStyle="bold"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp"
+                    android:id="@+id/game_table_player3"/>
 
                 <com.bgonline.bgfinder.RoundedImageView
                     android:layout_width="70sp"
@@ -138,7 +142,8 @@
                     android:text="Player4"
                     android:layout_gravity="center"
                     android:textStyle="bold"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp"
+                    android:id="@+id/game_table_player4"/>
 
                 <com.bgonline.bgfinder.RoundedImageView
                     android:layout_width="70sp"
@@ -153,7 +158,8 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="-20sp"
                 android:id="@+id/player5"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="invisible">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -162,7 +168,8 @@
                     android:layout_gravity="center"
                     android:textStyle="bold"
                     android:textSize="20sp"
-                    android:rotation="90"/>
+                    android:rotation="90"
+                    android:id="@+id/game_table_player5"/>
 
                 <com.bgonline.bgfinder.RoundedImageView
                     android:layout_width="70sp"
@@ -178,7 +185,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="-20sp"
                 android:id="@+id/player6"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="invisible">
 
                 <com.bgonline.bgfinder.RoundedImageView
                     android:layout_width="70sp"
@@ -193,7 +201,8 @@
                     android:layout_gravity="center"
                     android:textStyle="bold"
                     android:textSize="20sp"
-                    android:rotation="-90"/>
+                    android:rotation="-90"
+                    android:id="@+id/game_table_player6"/>
             </LinearLayout>
 
 
@@ -205,7 +214,8 @@
             android:text="Name Of The Game"
             android:gravity="center"
             android:textStyle="bold"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:id="@+id/game_table_game_name"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -221,7 +231,8 @@
                 android:layout_weight="10"
                 android:textStyle="bold"
                 android:textSize="20sp"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white"
+                android:id="@+id/game_table_where"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -231,7 +242,8 @@
                 android:layout_weight="10"
                 android:textStyle="bold"
                 android:textSize="20sp"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white"
+                android:id="@+id/game_table_when"/>
 
 
         </LinearLayout>

@@ -6,11 +6,10 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="470dp"
         android:id="@+id/tables"
         android:divider="@android:color/transparent"
-        android:dividerHeight="10.0sp"
-        android:layout_weight="1"/>
+        android:dividerHeight="10.0sp" />
 
     <LinearLayout
         android:layout_width="match_parent"

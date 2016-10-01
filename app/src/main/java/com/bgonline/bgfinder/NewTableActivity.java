@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import com.bgonline.bgfinder.databinding.NewTableBinding;
 import android.databinding.DataBindingUtil;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 public class NewTableActivity extends AppCompatActivity {
@@ -30,9 +31,23 @@ public class NewTableActivity extends AppCompatActivity {
                 String newTableJson = newTable.toJson();
                 Intent intent = new Intent();
                 intent.putExtra("NEW_TABLE", newTableJson);
+                intent.putExtra("RESULT", "SUCCESS");
                 setResult(0, intent);
                 finish();
             }
         });
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent();
+        intent.putExtra("RESULT", "FAILURE");
+        setResult(0, intent);
+        finish();
+        // code here to show dialog
+        //super.onBackPressed();
     }
 }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -30,19 +31,38 @@ public class TablesListAdapter extends ArrayAdapter<GameTable> {
             v = vi.inflate(R.layout.game_table, null);
         }
 
-        GameTable p = getItem(position);
+        GameTable table = getItem(position);
 
-        if (p != null) {
-            /*CheckBox cb1 = (CheckBox) v.findViewById(R.id.checkBox);
-            CheckBox cb2 = (CheckBox) v.findViewById(R.id.checkBox2);
+        if (table != null) {
+            TextView tableNameView = (TextView) v.findViewById(R.id.game_table_name);
+            tableNameView.setText(table.getTableName());
 
-            if (cb1 != null) {
-                cb1.setChecked(true);
-            }
+            TextView tableGame = (TextView) v.findViewById(R.id.game_table_game_name);
+            tableGame.setText(table.getGameName());
 
-            if (cb2 != null) {
-                cb2.setChecked(false);
-            }*/
+            TextView tablePlayer1 = (TextView) v.findViewById(R.id.game_table_player1);
+            tablePlayer1.setText(table.getPlayer1());
+
+            TextView tablePlayer2 = (TextView) v.findViewById(R.id.game_table_player2);
+            tablePlayer2.setText(table.getPlayer2());
+
+            TextView tablePlayer3 = (TextView) v.findViewById(R.id.game_table_player3);
+            tablePlayer3.setText(table.getPlayer3());
+
+            TextView tablePlayer4 = (TextView) v.findViewById(R.id.game_table_player4);
+            tablePlayer4.setText(table.getPlayer4());
+
+            TextView tablePlayer5 = (TextView) v.findViewById(R.id.game_table_player5);
+            tablePlayer5.setText(table.getPlayer5());
+
+            TextView tablePlayer6 = (TextView) v.findViewById(R.id.game_table_player6);
+            tablePlayer6.setText(table.getPlayer6());
+
+            TextView tableWhere= (TextView) v.findViewById(R.id.game_table_where);
+            tableWhere.setText(table.getLocation());
+
+            TextView tableWhen= (TextView) v.findViewById(R.id.game_table_when);
+            tableWhen.setText(table.getDate());
         }
 
         return v;

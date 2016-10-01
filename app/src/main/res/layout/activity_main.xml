@@ -22,6 +22,6 @@
         app:theme="@style/NavigationDrawerStyle"
         app:itemIconTint="@color/colorPrimaryDark"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer"/>
+        app:menu="@menu/activity_main_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

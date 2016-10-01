@@ -121,7 +121,7 @@
                             android:id="@+id/user_info_last_name"
                             android:textSize="20sp"
                             android:layout_weight="1"
-                            android:text="@={userInfo.firstName}"/>
+                            android:text="@={userInfo.lastName}"/>
                     </LinearLayout>
 
                 <LinearLayout

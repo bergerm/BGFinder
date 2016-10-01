@@ -2,13 +2,11 @@ package com.bgonline.bgfinder;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-/**
- * Created by Manu on 9/24/2016.
- */
 
 public class GameTable {
     private int tableId;
@@ -127,5 +125,15 @@ public class GameTable {
         tableName = context.getResources().getString(R.string.new_table_name);
         location = context.getResources().getString(R.string.tbd);
         date = context.getResources().getString(R.string.tbd);
+    }
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
+    public static GameTable fromJson(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, GameTable.class);
     }
 }

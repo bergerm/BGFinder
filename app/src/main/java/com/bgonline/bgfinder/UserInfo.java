@@ -1,5 +1,7 @@
 package com.bgonline.bgfinder;
 
+import com.google.gson.Gson;
+
 /**
  * Created by Manu on 9/17/2016.
  */
@@ -87,5 +89,13 @@ public class UserInfo {
         this.birthDate = birthDate;
     }
 
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
 
+    public static UserInfo fromJson(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, UserInfo.class);
+    }
 }

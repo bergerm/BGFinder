@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "278010063965",
+    "firebase_url": "https://bgfinder-b11b2.firebaseio.com",
+    "project_id": "bgfinder-b11b2",
+    "storage_bucket": "bgfinder-b11b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278010063965:android:5715d93417f3c9eb",
+        "android_client_info": {
+          "package_name": "com.bgonline.bgfinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "278010063965-65btgjn5hahe0uu3tbm1kd09ntv5d6h8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bgonline.bgfinder",
+            "certificate_hash": "FBA94F0E16795821C2876B368BE620B010E36ED1"
+          }
+        },
+        {
+          "client_id": "278010063965-fvdi1r18gm6rbc18tm1g2cff96q2pfr1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbNsQj89PAddXp0rqocoFKjKlI-Ts1nro"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "278010063965-fvdi1r18gm6rbc18tm1g2cff96q2pfr1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

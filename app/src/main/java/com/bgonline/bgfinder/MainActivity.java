@@ -37,8 +37,12 @@ import android.content.DialogInterface;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 
+import android.support.annotation.NonNull;
 import com.bgonline.bgfinder.databinding.NewTableBinding;
 import com.bgonline.bgfinder.databinding.UserInfoBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.AuthResult;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -49,6 +53,12 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import android.util.Log;
+
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnCompleteListener;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -64,8 +74,14 @@ public class MainActivity extends AppCompatActivity
     private Activity mainActivity;
     private int currentLayoutId;
 
+    private static final String TAG = "BGFinderMainActivity";
+
     // quit if pressed back twice
     boolean doubleBackToExitPressedOnce = false;
+
+    // FireBase Connection
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +93,41 @@ public class MainActivity extends AppCompatActivity
         isWindowChanged = false;
 
         mainActivity = this;
+
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
+
+        mAuth.signInWithEmailAndPassword("manueldavidb@mail.afeka.ac.il", "qwerty")
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithEmail", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // ...
+                    }
+                });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -94,6 +145,20 @@ public class MainActivity extends AppCompatActivity
         handleNavigateTables(l, inflater);
         handleNavigateGames(l, inflater);
         handleNavigateSummary(l, inflater);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 
     @Override

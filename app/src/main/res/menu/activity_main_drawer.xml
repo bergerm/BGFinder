@@ -18,7 +18,8 @@
         <item
             android:id="@+id/nav_new_table"
             android:icon="@drawable/ic_menu_new_table"
-            android:title="New Table" />
+            android:title="New Table"
+            android:visible="false"/> <!--REMOVED IN THIS VERSION-->
         <item
             android:id="@+id/nav_tables"
             android:icon="@drawable/ic_menu_tables_list"

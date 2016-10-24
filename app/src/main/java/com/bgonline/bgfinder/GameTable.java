@@ -4,11 +4,12 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class GameTable {
+public class GameTable implements Serializable{
     private int tableId;
     private String tableName;
     private String gameName;

@@ -1,6 +1,5 @@
 package com.bgonline.bgfinder;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,12 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class SummaryFragment extends SyncrhonizedLoadFragment {
+public class SummaryFragment extends SynchronizedLoadFragment {
 
     OnHeadlineSelectedListener mCallback;
 
@@ -123,10 +121,5 @@ public class SummaryFragment extends SyncrhonizedLoadFragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnHeadlineSelectedListener");
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
     }
 }

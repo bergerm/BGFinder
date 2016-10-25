@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">BGFinder</string>
 
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log In!</string>
+    <string name="forgot_password">Forgot Passoword?</string>
+    <string name="sign_up_instead">Don\'t have an account? Sign Up!</string>
+    <string name="password_minimum">Password should be at least 6 characters long.</string>
+    <string name="auth_failed">Authentication Failed. Check your email and password and try again!</string>
+    <string name="forgot_password_explanation">Enter your email address to receive instructions to reset your password.</string>
+    <string name="reset_password">RESET PASSWORD</string>
+    <string name="back"><![CDATA[<]]><![CDATA[<]]> back</string>
+    <string name="create_account">Create a new account!</string>
+    <string name="create_account_button">CREATE!</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

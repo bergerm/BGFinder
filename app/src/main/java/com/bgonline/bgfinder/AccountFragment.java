@@ -1,6 +1,5 @@
 package com.bgonline.bgfinder;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
@@ -10,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class AccountFragment extends SyncrhonizedLoadFragment {
+public class AccountFragment extends SynchronizedLoadFragment {
 
     UserInfo userInfo;
 

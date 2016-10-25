@@ -1,8 +1,6 @@
 package com.bgonline.bgfinder;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -17,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -31,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class GamesFragment extends SyncrhonizedLoadFragment {
+public class GamesFragment extends SynchronizedLoadFragment {
     OnHeadlineSelectedListener mCallback;
 
     // Container Activity must implement this interface

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /* this class is used to synchronize a fragment destruction which updates the activity using callbacks and the
 construction of a new fragment after it. This new fragment might need the updated values from the destructed one.
  */
-public class SyncrhonizedLoadFragment extends Fragment {
+public class SynchronizedLoadFragment extends Fragment {
 
     OnHeadlineSelectedListener mSynchronizedLoadCallback;
 
@@ -26,6 +26,11 @@ public class SyncrhonizedLoadFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnHeadlineSelectedListener");
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     @Override

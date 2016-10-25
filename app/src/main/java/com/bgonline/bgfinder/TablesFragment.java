@@ -1,8 +1,6 @@
 package com.bgonline.bgfinder;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,7 +23,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
-public class TablesFragment extends SyncrhonizedLoadFragment {
+public class TablesFragment extends SynchronizedLoadFragment {
     OnHeadlineSelectedListener mCallback;
 
     // Container Activity must implement this interface

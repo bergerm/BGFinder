@@ -10,7 +10,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -32,15 +34,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 
 import android.app.FragmentTransaction;
 
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        SyncrhonizedLoadFragment.OnHeadlineSelectedListener,
+        SynchronizedLoadFragment.OnHeadlineSelectedListener,
         SummaryFragment.OnHeadlineSelectedListener,
         GamesFragment.OnHeadlineSelectedListener,
-        TablesFragment.OnHeadlineSelectedListener {
+        TablesFragment.OnHeadlineSelectedListener,
+        LogInFragment.OnHeadlineSelectedListener,
+        SignUpFragment.OnHeadlineSelectedListener,
+        ForgotPasswordFragment.OnHeadlineSelectedListener {
 
     // objects used in different windows
+    private FirebaseUser connectedUser;
     private UserInfo userInfo;
     private ArrayList<String> arrayOfGames;
     private ArrayList<GameTable> arrayOfTables;
@@ -48,8 +53,9 @@ public class MainActivity extends AppCompatActivity
     // used to handle navigation
     private Activity mainActivity;
     private int currentLayoutId;
-    Fragment currentFragment;
-    LinkedList<Fragment> pendingChangeFragments;
+    private Fragment currentFragment;
+    private long timeSinceLastFragmentChange;
+    private LinkedList<Fragment> pendingChangeFragments;
 
     private static final String TAG = "BGFinderMainActivity";
 
@@ -71,40 +77,29 @@ public class MainActivity extends AppCompatActivity
         currentFragment = null;
         pendingChangeFragments = new LinkedList<Fragment>();
 
+        connectedUser = null;
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
+                connectedUser = firebaseAuth.getCurrentUser();
+                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                Menu navMenu = navigationView.getMenu();
+                if (connectedUser != null) {
                     // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + connectedUser.getUid());
+                    navMenu.findItem(R.id.nav_login).setVisible(false);
+                    navMenu.findItem(R.id.nav_logout).setVisible(true);
+                    onChangeFragment(new SummaryFragment());
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
+                    navMenu.findItem(R.id.nav_login).setVisible(true);
+                    navMenu.findItem(R.id.nav_logout).setVisible(false);
+                    onChangeFragment(new LogInFragment());
                 }
-                // ...
             }
         };
-
-        mAuth.signInWithEmailAndPassword("manueldavidb@mail.afeka.ac.il", "qwerty")
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithEmail", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-
-                        // ...
-                    }
-                });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -119,21 +114,6 @@ public class MainActivity extends AppCompatActivity
 
         arrayOfGames = (new GamesFragment()).getArrayOfGames(getApplicationContext());
         arrayOfTables = (new TablesFragment()).getArrayOfTables(getApplicationContext());
-        onChangeFragment(new SummaryFragment());
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
     }
 
     @Override
@@ -163,8 +143,9 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        Fragment newFragment;
+        Fragment newFragment = null;
 
+        boolean doChangeFraction = true;
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         switch (id) {
@@ -180,10 +161,15 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_tables:
                 newFragment = new TablesFragment();
                 break;
+            case R.id.nav_login:
+                newFragment = new LogInFragment();
+                break;
+            case R.id.nav_logout:
+                mAuth.signOut();
+                doChangeFraction = false;
+                break;
             case R.id.nav_new_table:
             case R.id.nav_friends:
-            case R.id.nav_login:
-            case R.id.nav_logout:
             case R.id.nav_invite:
             case R.id.nav_messages:
             default:
@@ -194,9 +180,11 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
-        onChangeFragment(newFragment);
+        if (doChangeFraction) {
+            onChangeFragment(newFragment);
+        }
 
-        return true;
+        return false;
     }
 
     private void showNotImplementedSnackbar() {
@@ -231,10 +219,22 @@ public class MainActivity extends AppCompatActivity
         transaction.commit();
 
         currentFragment = newFragment;
+        timeSinceLastFragmentChange = System.currentTimeMillis();
     }
 
     @Override
     public void onChangeFragment(Fragment newFragment) {
+        if (System.currentTimeMillis() - timeSinceLastFragmentChange < 1000) {
+            return;
+        }
+
+        if (connectedUser == null) {
+            if (!newFragment.getClass().equals(LogInFragment.class) &&
+                    !newFragment.getClass().equals(SignUpFragment.class) &&
+                    !newFragment.getClass().equals(ForgotPasswordFragment.class))
+            newFragment = new LogInFragment();
+        }
+
         if (newFragment == null) {
             showNotImplementedSnackbar();
             return;
@@ -259,6 +259,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             onSynchronizedFragmentLoad();
         }
+        timeSinceLastFragmentChange = System.currentTimeMillis();
     }
 
     @Override
@@ -291,4 +292,18 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }*/
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
 }

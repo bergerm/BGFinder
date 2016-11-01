@@ -17,6 +17,11 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -30,6 +35,10 @@ import java.util.Comparator;
 
 public class GamesFragment extends SynchronizedLoadFragment {
     OnHeadlineSelectedListener mCallback;
+
+    DatabaseReference database;
+    String connectedUserId;
+    ArrayAdapter<String> adapter;
 
     // Container Activity must implement this interface
     public interface OnHeadlineSelectedListener {
@@ -45,6 +54,32 @@ public class GamesFragment extends SynchronizedLoadFragment {
     }
 
     public GamesFragment() {
+    }
+
+    public void downloadArrayOfGames() {
+        if (database == null) {
+            return;
+        }
+        arrayOfGames = new ArrayList<String>();
+        database.child("games").child(connectedUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot game: dataSnapshot.getChildren()) {
+                    arrayOfGames.add((String)game.getValue());
+                }
+                adapter.notifyDataSetChanged();
+                saveGames();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void uploadArrayOfGames() {
+        database.child("games").child(connectedUserId).setValue(arrayOfGames);
     }
 
     public ArrayList<String> getArrayOfGames(Context context) {
@@ -83,18 +118,22 @@ public class GamesFragment extends SynchronizedLoadFragment {
             arrayOfGames = new ArrayList<String>();
         }
 
+        downloadArrayOfGames();
+
         return arrayOfGames;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        connectedUserId = getArguments().getString("connectedUserId");
+        database = FirebaseDatabase.getInstance().getReference();
         getArrayOfGames(getContext().getApplicationContext());
 
         View gameListView = inflater.inflate(R.layout.games_list, null);
 
         ListView list = (ListView) gameListView.findViewById(R.id.list_of_games);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1 , arrayOfGames);
+        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1 , arrayOfGames);
         list.setAdapter(adapter);
 
         Button addGameButton = (Button) gameListView.findViewById(R.id.game_list_add_game);
@@ -123,6 +162,7 @@ public class GamesFragment extends SynchronizedLoadFragment {
                             }
                         });
                         adapter.notifyDataSetChanged();
+                        uploadArrayOfGames();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -172,6 +212,7 @@ public class GamesFragment extends SynchronizedLoadFragment {
                             }
                         });
                         adapter.notifyDataSetChanged();
+                        uploadArrayOfGames();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -202,6 +243,7 @@ public class GamesFragment extends SynchronizedLoadFragment {
             Log.e(TAG, "Error opening gamesFile for write.");
         }
 
+        uploadArrayOfGames();
         mCallback.onUpdateGamesArray(arrayOfGames);
     }
 
@@ -226,5 +268,7 @@ public class GamesFragment extends SynchronizedLoadFragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnHeadlineSelectedListener");
         }
+
+        downloadArrayOfGames();
     }
 }

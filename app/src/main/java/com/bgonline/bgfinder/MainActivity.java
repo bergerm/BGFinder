@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Handler;
 
@@ -34,6 +35,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 
 import android.app.FragmentTransaction;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         SynchronizedLoadFragment.OnHeadlineSelectedListener,
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity
 
     // objects used in different windows
     private FirebaseUser connectedUser;
+    private UserImage currentUserImage;
     private UserInfo userInfo;
     private ArrayList<String> arrayOfGames;
     private ArrayList<GameTable> arrayOfTables;
@@ -85,17 +89,36 @@ public class MainActivity extends AppCompatActivity
                 connectedUser = firebaseAuth.getCurrentUser();
                 NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                 Menu navMenu = navigationView.getMenu();
+
+                NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+                View navHeader = navView.getHeaderView(0);
+
+                RoundedImageView currentUserImageView = (RoundedImageView) navHeader.findViewById(R.id.currentUserImage);
+                TextView currentUserEmail = (TextView) navHeader.findViewById(R.id.logged_user);
+                TextView currentUserString = (TextView) navHeader.findViewById(R.id.logged_user_string);
+
                 if (connectedUser != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + connectedUser.getUid());
                     navMenu.findItem(R.id.nav_login).setVisible(false);
                     navMenu.findItem(R.id.nav_logout).setVisible(true);
+
+                    currentUserImage = new UserImage(connectedUser.getUid(),currentUserImageView,getApplicationContext());
+                    currentUserEmail.setText(connectedUser.getEmail());
+                    currentUserString.setText("User description should go here!");
+
                     onChangeFragment(new SummaryFragment());
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                     navMenu.findItem(R.id.nav_login).setVisible(true);
                     navMenu.findItem(R.id.nav_logout).setVisible(false);
+
+                    currentUserImage = null;
+                    currentUserImageView.setImageDrawable(getDrawable(R.drawable.meeples_pic));
+                    currentUserEmail.setText(getString(R.string.unsigned_user_name));
+                    currentUserString.setText(getString(R.string.unsigned_user_String));
+
                     onChangeFragment(new LogInFragment());
                 }
             }
@@ -123,7 +146,8 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             if (doubleBackToExitPressedOnce) {
-                super.onBackPressed();
+                //super.onBackPressed();
+                finish();
                 return;
             }
 
@@ -209,6 +233,12 @@ public class MainActivity extends AppCompatActivity
         }
 
         Bundle fragmentArgs = new Bundle();
+        if (connectedUser != null) {
+            fragmentArgs.putString("connectedUserId", connectedUser.getUid());
+        } else {
+            fragmentArgs.putString("connectedUserId", "");
+        }
+        fragmentArgs.putSerializable("currentUserImage", currentUserImage);
         fragmentArgs.putSerializable("arrayOfTables", arrayOfTables);
         fragmentArgs.putSerializable("arrayOfGames", arrayOfGames);
         newFragment.setArguments(fragmentArgs);

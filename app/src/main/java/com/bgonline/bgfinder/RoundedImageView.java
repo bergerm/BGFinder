@@ -12,6 +12,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.widget.ImageView;
 
 public class RoundedImageView extends ImageView {
@@ -43,9 +44,15 @@ public class RoundedImageView extends ImageView {
         Bitmap b = ((BitmapDrawable) drawable).getBitmap();
         Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true);
 
-        int w = getWidth(), h = getHeight();
+//        int w = getWidth(), h = getHeight();
+        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
+        int size = (int) metrics.density * 70;
+        int w = size, h = size;
 
-        Bitmap roundBitmap = getCroppedBitmap(bitmap, w);
+        //Bitmap scaledBitMap = Bitmap.createScaledBitmap(bitmap, getWidth(), getHeight(), false);
+        Bitmap scaledBitMap = Bitmap.createScaledBitmap(bitmap, size, size, false);
+
+        Bitmap roundBitmap = getCroppedBitmap(scaledBitMap, w);
         canvas.drawBitmap(roundBitmap, 0, 0, null);
 
     }

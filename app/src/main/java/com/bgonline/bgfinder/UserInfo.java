@@ -6,7 +6,7 @@ import com.google.gson.Gson;
  * Created by Manu on 9/17/2016.
  */
 public class UserInfo {
-    private int userId;
+    private String userId;
     private String email;
     private String description;
     private String firstName;
@@ -17,11 +17,11 @@ public class UserInfo {
     private String birthDate;
 
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

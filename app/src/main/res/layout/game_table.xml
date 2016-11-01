@@ -64,7 +64,7 @@
                 <com.bgonline.bgfinder.RoundedImageView
                     android:layout_width="70sp"
                     android:layout_height="70sp"
-                    android:src="@drawable/meeples_pic"/>
+                    android:src="@drawable/no_image"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -89,7 +89,7 @@
                 <com.bgonline.bgfinder.RoundedImageView
                     android:layout_width="70sp"
                     android:layout_height="70sp"
-                    android:src="@drawable/meeples_pic"/>
+                    android:src="@drawable/no_image"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -123,7 +123,7 @@
                 <com.bgonline.bgfinder.RoundedImageView
                     android:layout_width="70sp"
                     android:layout_height="70sp"
-                    android:src="@drawable/meeples_pic"/>
+                    android:src="@drawable/no_image"/>
             </LinearLayout>
 
             <LinearLayout
@@ -148,7 +148,7 @@
                 <com.bgonline.bgfinder.RoundedImageView
                     android:layout_width="70sp"
                     android:layout_height="70sp"
-                    android:src="@drawable/meeples_pic"/>
+                    android:src="@drawable/no_image"/>
             </LinearLayout>
 
             <LinearLayout
@@ -174,7 +174,7 @@
                 <com.bgonline.bgfinder.RoundedImageView
                     android:layout_width="70sp"
                     android:layout_height="70sp"
-                    android:src="@drawable/meeples_pic"
+                    android:src="@drawable/no_image"
                     android:layout_marginLeft="-25sp"/>
             </LinearLayout>
 
@@ -191,7 +191,7 @@
                 <com.bgonline.bgfinder.RoundedImageView
                     android:layout_width="70sp"
                     android:layout_height="70sp"
-                    android:src="@drawable/meeples_pic"
+                    android:src="@drawable/no_image"
                     android:layout_marginRight="-25sp"/>
 
                 <TextView

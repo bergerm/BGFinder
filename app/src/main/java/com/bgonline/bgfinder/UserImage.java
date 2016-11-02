@@ -17,38 +17,38 @@ import android.widget.ImageView;
 import java.io.Serializable;
 
 public class UserImage implements Serializable{
-    Bitmap bitmap;
+    //Bitmap bitmap;
     String userId;
-    Context context;
+    //Context context;
 
-    public UserImage(String userId, final RoundedImageView imageView, final Context context) {
+    public UserImage(String userId, final ImageView imageView, final Context context) {
         this.userId = userId;
-        this.context = context;
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://bgfinder-b11b2.appspot.com");
         StorageReference imageReference = storageRef.child("userPictures/" + userId + ".jpg");
-
 
         final long ONE_MEGABYTE = 1024 * 1024;
         imageReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
-                bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                imageView.setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
-                imageView.setVisibility(View.VISIBLE);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                if (imageView != null) {
+                    imageView.setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
+                    imageView.setVisibility(View.VISIBLE);
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                bitmap = null;
+                //bitmap = null;
                 imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.no_image, null));
                 imageView.setVisibility(View.VISIBLE);
             }
         });
     }
 
-    void applyOnView(ImageView view) {
+    /*void applyOnView(ImageView view) {
         view.setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
         view.setVisibility(View.VISIBLE);
-    }
+    }*/
 }

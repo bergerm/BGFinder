@@ -129,7 +129,8 @@ public class AccountFragment extends SynchronizedLoadFragment {
         progressBar.setVisibility(View.VISIBLE);
 
         ImageView userImageView = (ImageView) binding.getRoot().findViewById(R.id.user_info_image);
-        image.applyOnView(userImageView);
+        UserImage newImage = new UserImage(image.userId, userImageView, getContext());
+        //image.applyOnView(userImageView);
 
         return binding.getRoot();
     }

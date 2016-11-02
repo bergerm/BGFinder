@@ -21,7 +21,8 @@ public class NewTableActivity extends AppCompatActivity {
 
         NewTableBinding binding = DataBindingUtil.setContentView(this, R.layout.new_table);
 
-        newTable = new GameTable(NewTableActivity.this, 0);
+        newTable = new GameTable(NewTableActivity.this, "0");
+        newTable.setPlayer1UserName("Me!");
         binding.setGameTable(newTable);
 
         Button saveTableButton = (Button) findViewById(R.id.new_table_save_button);

@@ -56,17 +56,19 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/table_frame"
                 android:layout_alignStart="@id/table_frame"
-                android:layout_marginBottom="-20sp"
-                android:layout_marginStart="70sp"
+                android:layout_marginBottom="-30sp"
+                android:layout_marginStart="50sp"
                 android:id="@+id/player1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="invisible">
 
                 <com.bgonline.bgfinder.RoundedImageView
                     android:layout_width="70sp"
                     android:layout_height="70sp"
-                    android:src="@drawable/no_image"/>
+                    android:src="@drawable/no_image"
+                    android:id="@+id/game_table_player1_image"/>
 
-                <TextView
+                <me.grantland.widget.AutofitTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Player1"
@@ -81,17 +83,19 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/table_frame"
                 android:layout_alignEnd="@id/table_frame"
-                android:layout_marginBottom="-20sp"
-                android:layout_marginEnd="70sp"
+                android:layout_marginBottom="-30sp"
+                android:layout_marginEnd="50sp"
                 android:id="@+id/player2"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="invisible">
 
                 <com.bgonline.bgfinder.RoundedImageView
                     android:layout_width="70sp"
                     android:layout_height="70sp"
-                    android:src="@drawable/no_image"/>
+                    android:src="@drawable/no_image"
+                    android:id="@+id/game_table_player2_image"/>
 
-                <TextView
+                <me.grantland.widget.AutofitTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Player2"
@@ -106,12 +110,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/table_frame"
                 android:layout_alignStart="@id/table_frame"
-                android:layout_marginTop="-20sp"
-                android:layout_marginStart="70sp"
+                android:layout_marginTop="-30sp"
+                android:layout_marginStart="50sp"
                 android:id="@+id/player3"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="invisible">
 
-                <TextView
+                <me.grantland.widget.AutofitTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Player3"
@@ -123,7 +128,8 @@
                 <com.bgonline.bgfinder.RoundedImageView
                     android:layout_width="70sp"
                     android:layout_height="70sp"
-                    android:src="@drawable/no_image"/>
+                    android:src="@drawable/no_image"
+                    android:id="@+id/game_table_player3_image"/>
             </LinearLayout>
 
             <LinearLayout
@@ -131,12 +137,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/table_frame"
                 android:layout_alignEnd="@id/table_frame"
-                android:layout_marginTop="-20sp"
-                android:layout_marginEnd="70sp"
+                android:layout_marginTop="-30sp"
+                android:layout_marginEnd="50sp"
                 android:id="@+id/player4"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="invisible">
 
-                <TextView
+                <me.grantland.widget.AutofitTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Player4"
@@ -148,7 +155,8 @@
                 <com.bgonline.bgfinder.RoundedImageView
                     android:layout_width="70sp"
                     android:layout_height="70sp"
-                    android:src="@drawable/no_image"/>
+                    android:src="@drawable/no_image"
+                    android:id="@+id/game_table_player4_image"/>
             </LinearLayout>
 
             <LinearLayout
@@ -161,7 +169,7 @@
                 android:orientation="horizontal"
                 android:visibility="invisible">
 
-                <TextView
+                <me.grantland.widget.AutofitTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Player5"
@@ -194,7 +202,7 @@
                     android:src="@drawable/no_image"
                     android:layout_marginRight="-25sp"/>
 
-                <TextView
+                <me.grantland.widget.AutofitTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Player6"

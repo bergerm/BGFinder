@@ -10,23 +10,28 @@ import java.util.Date;
 import java.util.List;
 
 public class GameTable implements Serializable{
-    private int tableId;
+    private String tableId;
     private String tableName;
     private String gameName;
     private String location;
     private String date;
-    private String player1;
-    private String player2;
-    private String player3;
-    private String player4;
-    private String player5;
-    private String player6;
+    private String player1Id;
+    private String player2Id;
+    private String player3Id;
+    private String player4Id;
+    private String player1UserName;
+    private String player2UserName;
+    private String player3UserName;
+    private String player4UserName;
 
-    public int getTableId() {
+    private String player5Id;
+    private String player6Id;
+
+    public String getTableId() {
         return tableId;
     }
 
-    public void setTableId(int tableId) {
+    public void setTableId(String tableId) {
         this.tableId = tableId;
     }
 
@@ -55,51 +60,82 @@ public class GameTable implements Serializable{
     }
 
     public String getPlayer1() {
-        return player1;
+        return player1Id;
     }
 
     public void setPlayer1(String player1) {
-        this.player1 = player1;
+        this.player1Id = player1;
     }
 
     public String getPlayer2() {
-        return player2;
+        return player2Id;
     }
 
     public void setPlayer2(String player2) {
-        this.player2 = player2;
+        this.player2Id = player2;
     }
 
     public String getPlayer3() {
-        return player3;
+        return player3Id;
     }
 
     public void setPlayer3(String player3) {
-        this.player3 = player3;
+        this.player3Id = player3;
     }
 
     public String getPlayer4() {
-        return player4;
+        return player4Id;
     }
 
     public void setPlayer4(String player4) {
-        this.player4 = player4;
+        this.player4Id = player4;
+    }
+
+
+    public String getPlayer1UserName() {
+        return player1UserName;
+    }
+
+    public void setPlayer1UserName(String player1) {
+        this.player1UserName = player1;
+    }
+
+    public String getPlayer2UserName() {
+        return player2UserName;
+    }
+
+    public void setPlayer2UserName(String player2) {
+        this.player2UserName = player2;
+    }
+
+    public String getPlayer3UserName() { return player3UserName; }
+
+    public void setPlayer3UserName(String player3) {
+        this.player3UserName = player3;
+    }
+
+    public String getPlayer4UserName() {
+        return player4UserName;
+    }
+
+    public void setPlayer4UserName(String player4) {
+        this.player4UserName = player4;
     }
 
     public String getPlayer5() {
-        return player5;
+        return player5Id;
     }
 
     public void setPlayer5(String player5) {
-        this.player5 = player5;
+        this.player5Id = player5;
     }
 
     public String getPlayer6() {
-        return player6;
+        return player6Id;
     }
 
     public void setPlayer6(String player6) {
-        this.player6 = player6;
+        this.player6Id = player6;
     }
 
 
@@ -111,19 +147,22 @@ public class GameTable implements Serializable{
         this.gameName = gameName;
     }
 
-    public GameTable(Context context, int id) {
+    public GameTable(Context context, String id) {
         tableId = id;
         tableName = context.getResources().getString(R.string.new_table_name);
         gameName = "TBD";
         location = context.getResources().getString(R.string.tbd);
         date = context.getResources().getString(R.string.tbd);
-        player1 = "me";
-        player2 = "";
-        player3 = "";
-        player4 = "";
-        player5 = "";
-        player6 = "";
-
+        player1Id = "";
+        player2Id = "";
+        player3Id = "";
+        player4Id = "";
+        player1UserName = "";
+        player2UserName = "";
+        player3UserName = "";
+        player4UserName = "";
+        player5Id = "";
+        player6Id = "";
     }
 
     public String toJson() {

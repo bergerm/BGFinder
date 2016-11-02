@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -41,28 +42,56 @@ public class TablesListAdapter extends ArrayAdapter<GameTable> {
             tableGame.setText(table.getGameName());
 
             TextView tablePlayer1 = (TextView) v.findViewById(R.id.game_table_player1);
-            tablePlayer1.setText(table.getPlayer1());
+            tablePlayer1.setText(table.getPlayer1UserName());
 
             TextView tablePlayer2 = (TextView) v.findViewById(R.id.game_table_player2);
-            tablePlayer2.setText(table.getPlayer2());
+            tablePlayer2.setText(table.getPlayer2UserName());
 
             TextView tablePlayer3 = (TextView) v.findViewById(R.id.game_table_player3);
-            tablePlayer3.setText(table.getPlayer3());
+            tablePlayer3.setText(table.getPlayer3UserName());
 
             TextView tablePlayer4 = (TextView) v.findViewById(R.id.game_table_player4);
-            tablePlayer4.setText(table.getPlayer4());
+            tablePlayer4.setText(table.getPlayer4UserName());
 
-            TextView tablePlayer5 = (TextView) v.findViewById(R.id.game_table_player5);
+            /*TextView tablePlayer5 = (TextView) v.findViewById(R.id.game_table_player5);
             tablePlayer5.setText(table.getPlayer5());
 
             TextView tablePlayer6 = (TextView) v.findViewById(R.id.game_table_player6);
-            tablePlayer6.setText(table.getPlayer6());
+            tablePlayer6.setText(table.getPlayer6());*/
 
             TextView tableWhere= (TextView) v.findViewById(R.id.game_table_where);
             tableWhere.setText(table.getLocation());
 
             TextView tableWhen= (TextView) v.findViewById(R.id.game_table_when);
             tableWhen.setText(table.getDate());
+
+            if (table.getPlayer1() != "") {
+                LinearLayout player1View = (LinearLayout) v.findViewById(R.id.player1);
+                player1View.setVisibility(View.VISIBLE);
+                RoundedImageView imageView1 = (RoundedImageView) v.findViewById(R.id.game_table_player1_image);
+                UserImage newImage = new UserImage(table.getPlayer1(), imageView1, getContext());
+            }
+
+            if (table.getPlayer2() != "") {
+                LinearLayout player2View = (LinearLayout) v.findViewById(R.id.player2);
+                player2View.setVisibility(View.VISIBLE);
+                RoundedImageView imageView2 = (RoundedImageView) v.findViewById(R.id.game_table_player2_image);
+                UserImage newImage = new UserImage(table.getPlayer2(), imageView2, getContext());
+            }
+
+            if (table.getPlayer3() != "") {
+                LinearLayout player3View = (LinearLayout) v.findViewById(R.id.player3);
+                player3View.setVisibility(View.VISIBLE);
+                RoundedImageView imageView3 = (RoundedImageView) v.findViewById(R.id.game_table_player3_image);
+                UserImage newImage = new UserImage(table.getPlayer3(), imageView3, getContext());
+            }
+
+            if (table.getPlayer4() != "") {
+                LinearLayout player4View = (LinearLayout) v.findViewById(R.id.player4);
+                player4View.setVisibility(View.VISIBLE);
+                RoundedImageView imageView4 = (RoundedImageView) v.findViewById(R.id.game_table_player4_image);
+                UserImage newImage = new UserImage(table.getPlayer4(), imageView4, getContext());
+            }
         }
 
         return v;

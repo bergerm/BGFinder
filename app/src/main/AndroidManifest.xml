@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".NewTableActivity"></activity>
+        <activity android:name=".EditTableActivity"></activity>
     </application>
 
 </manifest>

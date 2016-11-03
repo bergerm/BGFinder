@@ -48,7 +48,5 @@ public class NewTableActivity extends AppCompatActivity {
         intent.putExtra("RESULT", "FAILURE");
         setResult(0, intent);
         finish();
-        // code here to show dialog
-        //super.onBackPressed();
     }
 }

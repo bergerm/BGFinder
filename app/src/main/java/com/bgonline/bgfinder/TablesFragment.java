@@ -317,7 +317,7 @@ public class TablesFragment extends SynchronizedLoadFragment {
 
         tablesList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int pos, long id) {
                 final GameTable selectedTable = tablesListAdapter.getItem(pos);
                 final Dialog tableOptionsDialog = new Dialog(getActivity());
                 tableOptionsDialog.setContentView(R.layout.table_options);
@@ -407,6 +407,15 @@ public class TablesFragment extends SynchronizedLoadFragment {
                 });
 
                 Button editButton = (Button) tableOptionsDialog.findViewById(R.id.table_option_edit_button);
+                editButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), EditTableActivity.class);
+                        intent.putExtra("EDIT_TABLE_INDEX", pos);
+                        intent.putExtra("EDIT_TABLE", selectedTable.toJson());
+                        startActivityForResult(intent, 0);
+                    }
+                });
 
                 Button kickButton = (Button) tableOptionsDialog.findViewById(R.id.table_option_kick_button);
                 kickButton.setOnClickListener(new View.OnClickListener() {
@@ -593,22 +602,53 @@ public class TablesFragment extends SynchronizedLoadFragment {
         }
 
         String newTableJson=data.getStringExtra("NEW_TABLE");
-        if (!newTableJson.equals("null") && !newTableJson.equals("")) {
-            Gson gson = new Gson();
-            GameTable newTable = gson.fromJson(newTableJson, GameTable.class);
+        if (!(newTableJson == null) && !newTableJson.equals("")) {
+            if (!newTableJson.equals("null") && !newTableJson.equals("")) {
+                Gson gson = new Gson();
+                GameTable newTable = gson.fromJson(newTableJson, GameTable.class);
 
-            String newTableId = getNewTableId();
-            newTable.setTableId(newTableId);
-            database.child("tables").child(newTableId).child("name").setValue(newTable.getTableName());
-            database.child("tables").child(newTableId).child("GameName").setValue(newTable.getGameName());
-            database.child("tables").child(newTableId).child("when").setValue(newTable.getDate());
-            database.child("tables").child(newTableId).child("where").setValue(newTable.getLocation());
+                String newTableId = getNewTableId();
+                newTable.setTableId(newTableId);
+                database.child("tables").child(newTableId).child("name").setValue(newTable.getTableName());
+                database.child("tables").child(newTableId).child("GameName").setValue(newTable.getGameName());
+                database.child("tables").child(newTableId).child("when").setValue(newTable.getDate());
+                database.child("tables").child(newTableId).child("where").setValue(newTable.getLocation());
 
-            database.child("usersInTables").child(newTableId).child(connectedUserId).setValue("");
-            database.child("tablesForUsers").child(connectedUserId).child(newTableId).setValue("");
+                database.child("usersInTables").child(newTableId).child(connectedUserId).setValue("");
+                database.child("tablesForUsers").child(connectedUserId).child(newTableId).setValue("");
 
-            arrayOfTables.add(newTable);
-            tablesListAdapter.notifyDataSetChanged();
+                arrayOfTables.add(newTable);
+                tablesListAdapter.notifyDataSetChanged();
+            }
+            return;
+        }
+
+        String editTableJson=data.getStringExtra("EDIT_TABLE");
+        if (!(editTableJson == null) && !editTableJson.equals("")) {
+            if (!editTableJson.equals("null") && !editTableJson.equals("")) {
+                Gson gson = new Gson();
+                GameTable editTable = gson.fromJson(editTableJson, GameTable.class);
+
+                String tableId = editTable.getTableId();
+
+                database.child("tables").child(tableId).child("name").setValue(editTable.getTableName());
+                database.child("tables").child(tableId).child("GameName").setValue(editTable.getGameName());
+                database.child("tables").child(tableId).child("when").setValue(editTable.getDate());
+                database.child("tables").child(tableId).child("where").setValue(editTable.getLocation());
+
+                database.child("usersInTables").child(tableId).child(connectedUserId).setValue("");
+                database.child("tablesForUsers").child(connectedUserId).child(tableId).setValue("");
+
+                int index = data.getExtras().getInt("EDIT_TABLE_INDEX");
+
+                GameTable original = tablesListAdapter.getItem(index);
+                original.setGameName(editTable.getGameName());
+                original.setTableName(editTable.getTableName());
+                original.setDate(editTable.getDate());
+                original.setLocation(editTable.getLocation());
+                tablesListAdapter.notifyDataSetChanged();
+            }
+            return;
         }
     }
 

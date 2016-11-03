@@ -23,19 +23,13 @@ import android.support.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.AuthResult;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 import android.util.Log;
 
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.OnCompleteListener;
-
 import android.app.FragmentTransaction;
-
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -60,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     private Fragment currentFragment;
     private long timeSinceLastFragmentChange;
     private LinkedList<Fragment> pendingChangeFragments;
+    private boolean initialized;
 
     private static final String TAG = "BGFinderMainActivity";
 
@@ -73,6 +68,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initialized = false;
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -107,7 +103,11 @@ public class MainActivity extends AppCompatActivity
                     currentUserEmail.setText(connectedUser.getEmail());
                     currentUserString.setText("User description should go here!");
 
-                    onChangeFragment(new SummaryFragment());
+                    if (!initialized) {
+                        onChangeFragment(new SummaryFragment());
+                    }
+                    initialized = true;
+
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity
                     currentUserString.setText(getString(R.string.unsigned_user_String));
 
                     onChangeFragment(new LogInFragment());
+
+                    initialized = false;
                 }
             }
         };

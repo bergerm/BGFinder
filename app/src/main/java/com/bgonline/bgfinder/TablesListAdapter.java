@@ -65,32 +65,44 @@ public class TablesListAdapter extends ArrayAdapter<GameTable> {
             TextView tableWhen= (TextView) v.findViewById(R.id.game_table_when);
             tableWhen.setText(table.getDate());
 
+            LinearLayout player1View = (LinearLayout) v.findViewById(R.id.player1);
             if (table.getPlayer1() != "") {
-                LinearLayout player1View = (LinearLayout) v.findViewById(R.id.player1);
                 player1View.setVisibility(View.VISIBLE);
                 RoundedImageView imageView1 = (RoundedImageView) v.findViewById(R.id.game_table_player1_image);
                 UserImage newImage = new UserImage(table.getPlayer1(), imageView1, getContext());
             }
+            else {
+                player1View.setVisibility(View.INVISIBLE);
+            }
 
+            LinearLayout player2View = (LinearLayout) v.findViewById(R.id.player2);
             if (table.getPlayer2() != "") {
-                LinearLayout player2View = (LinearLayout) v.findViewById(R.id.player2);
                 player2View.setVisibility(View.VISIBLE);
                 RoundedImageView imageView2 = (RoundedImageView) v.findViewById(R.id.game_table_player2_image);
                 UserImage newImage = new UserImage(table.getPlayer2(), imageView2, getContext());
             }
+            else {
+                player2View.setVisibility(View.INVISIBLE);
+            }
 
+            LinearLayout player3View = (LinearLayout) v.findViewById(R.id.player3);
             if (table.getPlayer3() != "") {
-                LinearLayout player3View = (LinearLayout) v.findViewById(R.id.player3);
                 player3View.setVisibility(View.VISIBLE);
                 RoundedImageView imageView3 = (RoundedImageView) v.findViewById(R.id.game_table_player3_image);
                 UserImage newImage = new UserImage(table.getPlayer3(), imageView3, getContext());
             }
+            else {
+                player3View.setVisibility(View.INVISIBLE);
+            }
 
+            LinearLayout player4View = (LinearLayout) v.findViewById(R.id.player4);
             if (table.getPlayer4() != "") {
-                LinearLayout player4View = (LinearLayout) v.findViewById(R.id.player4);
                 player4View.setVisibility(View.VISIBLE);
                 RoundedImageView imageView4 = (RoundedImageView) v.findViewById(R.id.game_table_player4_image);
                 UserImage newImage = new UserImage(table.getPlayer4(), imageView4, getContext());
+            }
+            else {
+                player4View.setVisibility(View.INVISIBLE);
             }
         }
 

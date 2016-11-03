@@ -5,24 +5,32 @@
 
 
     <Button
-        android:text="Invite Players"
+        android:text="player 1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/table_option_invite_button" />
+        android:id="@+id/kick_player1_button"
+        android:visibility="gone"/>
     <Button
-        android:text="edit table"
+        android:text="player 2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/table_option_edit_button" />
+        android:id="@+id/kick_player2_button"
+        android:visibility="gone" />
     <Button
-        android:text="leave table"
+        android:text="player 3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/table_option_leave_button" />
-
+        android:id="@+id/kick_player3_button"
+        android:visibility="gone" />
+    <Button
+        android:text="player 4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/kick_player4_button"
+        android:visibility="gone" />
     <Button
         android:text="cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/table_option_cancel_button" />
+        android:id="@+id/kick_player_cancel_button" />
 </LinearLayout>

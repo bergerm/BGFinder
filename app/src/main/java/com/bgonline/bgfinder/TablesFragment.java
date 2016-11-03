@@ -67,9 +67,10 @@ public class TablesFragment extends SynchronizedLoadFragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     int count = 0;
-                    for (DataSnapshot player : dataSnapshot.getChildren()) {
-                        GameTable table = (GameTable) tablesListAdapter.getItem(j);
 
+                    GameTable table = (GameTable) tablesListAdapter.getItem(j);
+
+                    for (DataSnapshot player : dataSnapshot.getChildren()) {
                         //String playerId = (String) player.getValue();
                         String playerId = (String) player.getKey();
                         switch (count) {
@@ -91,6 +92,26 @@ public class TablesFragment extends SynchronizedLoadFragment {
 
                         count++;
                     }
+
+                    for (; count < 4; count++) {
+                        switch (count) {
+                            case 0:
+                                table.setPlayer1("");
+                                break;
+                            case 1:
+                                table.setPlayer2("");
+                                break;
+                            case 2:
+                                table.setPlayer3("");
+                                break;
+                            case 3:
+                                table.setPlayer4("");
+                                break;
+                            default:
+                                return;
+                        }
+                    }
+
                     tablesListAdapter.notifyDataSetChanged();
 
                 }
@@ -356,6 +377,7 @@ public class TablesFragment extends SynchronizedLoadFragment {
                                                     default:
                                                         break;
                                                 }
+                                                updatePlayersInTables();
                                                 tablesListAdapter.notifyDataSetChanged();
                                             }
 
@@ -383,9 +405,99 @@ public class TablesFragment extends SynchronizedLoadFragment {
                         });
                     }
                 });
-                Button editButton = (Button) tableOptionsDialog.findViewById(R.id.table_option_edit_button);
-                Button leaveButton = (Button) tableOptionsDialog.findViewById(R.id.table_option_leave_button);
 
+                Button editButton = (Button) tableOptionsDialog.findViewById(R.id.table_option_edit_button);
+
+                Button kickButton = (Button) tableOptionsDialog.findViewById(R.id.table_option_kick_button);
+                kickButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final Dialog kickPlayerDialog = new Dialog(getActivity());
+                        kickPlayerDialog.setContentView(R.layout.kick_user_buttons);
+                        kickPlayerDialog.setTitle("Which player would you like to kick?");
+
+                        Button kickPlayer1Button = (Button)kickPlayerDialog.findViewById(R.id.kick_player1_button);
+                        Button kickPlayer2Button = (Button)kickPlayerDialog.findViewById(R.id.kick_player2_button);
+                        Button kickPlayer3Button = (Button)kickPlayerDialog.findViewById(R.id.kick_player3_button);
+                        Button kickPlayer4Button = (Button)kickPlayerDialog.findViewById(R.id.kick_player4_button);
+                        Button kickCancelButton = (Button)kickPlayerDialog.findViewById(R.id.kick_player_cancel_button);
+
+                        if (!selectedTable.getPlayer1().isEmpty() && !selectedTable.getPlayer1().equals(connectedUserId)) {
+                            kickPlayer1Button.setText(selectedTable.getPlayer1UserName());
+                            kickPlayer1Button.setVisibility(View.VISIBLE);
+                        }
+                        if (!selectedTable.getPlayer2().isEmpty() && !selectedTable.getPlayer2().equals(connectedUserId)) {
+                            kickPlayer2Button.setText(selectedTable.getPlayer2UserName());
+                            kickPlayer2Button.setVisibility(View.VISIBLE);
+                        }
+                        if (!selectedTable.getPlayer3().isEmpty() && !selectedTable.getPlayer3().equals(connectedUserId)) {
+                            kickPlayer3Button.setText(selectedTable.getPlayer3UserName());
+                            kickPlayer3Button.setVisibility(View.VISIBLE);
+                        }
+                        if (!selectedTable.getPlayer4().isEmpty() && !selectedTable.getPlayer4().equals(connectedUserId)) {
+                            kickPlayer4Button.setText(selectedTable.getPlayer4UserName());
+                            kickPlayer4Button.setVisibility(View.VISIBLE);
+                        }
+
+                        kickPlayer1Button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                database.child("usersInTables").child(selectedTable.getTableId()).child(selectedTable.getPlayer1()).removeValue();
+                                database.child("tablesForUsers").child(selectedTable.getPlayer1()).child(selectedTable.getTableId()).removeValue();
+                                selectedTable.setPlayer1("");
+                                updatePlayersInTables();
+                                tablesListAdapter.notifyDataSetChanged();
+                                kickPlayerDialog.cancel();
+                            }
+                        });
+
+                        kickPlayer2Button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                database.child("usersInTables").child(selectedTable.getTableId()).child(selectedTable.getPlayer2()).removeValue();
+                                database.child("tablesForUsers").child(selectedTable.getPlayer2()).child(selectedTable.getTableId()).removeValue();
+                                selectedTable.setPlayer2("");
+                                updatePlayersInTables();
+                                tablesListAdapter.notifyDataSetChanged();
+                                kickPlayerDialog.cancel();
+                            }
+                        });
+
+                        kickPlayer3Button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                database.child("usersInTables").child(selectedTable.getTableId()).child(selectedTable.getPlayer3()).removeValue();
+                                database.child("tablesForUsers").child(selectedTable.getPlayer3()).child(selectedTable.getTableId()).removeValue();
+                                selectedTable.setPlayer3("");
+                                updatePlayersInTables();
+                                tablesListAdapter.notifyDataSetChanged();
+                                kickPlayerDialog.cancel();
+                            }
+                        });
+
+                        kickPlayer4Button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                database.child("usersInTables").child(selectedTable.getTableId()).child(selectedTable.getPlayer4()).removeValue();
+                                database.child("tablesForUsers").child(selectedTable.getPlayer4()).child(selectedTable.getTableId()).removeValue();
+                                selectedTable.setPlayer4("");
+                                updatePlayersInTables();
+                                tablesListAdapter.notifyDataSetChanged();
+                                kickPlayerDialog.cancel();
+                            }
+                        });
+
+                        kickCancelButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                kickPlayerDialog.cancel();
+                            }
+                        });
+                        kickPlayerDialog.show();
+                    }
+                });
+
+                Button leaveButton = (Button) tableOptionsDialog.findViewById(R.id.table_option_leave_button);
                 leaveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -396,8 +508,23 @@ public class TablesFragment extends SynchronizedLoadFragment {
                                 database.child("tablesForUsers").child(connectedUserId).child(selectedTable.getTableId()).removeValue();
                                 database.child("usersInTables").child(selectedTable.getTableId()).child(connectedUserId).removeValue();
 
+                                database.child("usersInTables").child(selectedTable.getTableId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.getChildrenCount() == 0) {
+                                            database.child("tables").child(selectedTable.getTableId()).removeValue();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
                                 tablesListAdapter.remove(selectedTable);
                                 tablesListAdapter.notifyDataSetChanged();
+                                tableOptionsDialog.cancel();
                             }
                         })
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -477,7 +604,8 @@ public class TablesFragment extends SynchronizedLoadFragment {
             database.child("tables").child(newTableId).child("when").setValue(newTable.getDate());
             database.child("tables").child(newTableId).child("where").setValue(newTable.getLocation());
 
-            database.child("usersInTables").child(newTableId).child("0").setValue(connectedUserId);
+            database.child("usersInTables").child(newTableId).child(connectedUserId).setValue("");
+            database.child("tablesForUsers").child(connectedUserId).child(newTableId).setValue("");
 
             arrayOfTables.add(newTable);
             tablesListAdapter.notifyDataSetChanged();

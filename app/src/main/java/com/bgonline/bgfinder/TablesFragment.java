@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -58,6 +59,9 @@ public class TablesFragment extends SynchronizedLoadFragment {
     }
 
     private void updatePlayersInTables() {
+        ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.tables_progress_bar);
+        progressBar.setVisibility(View.GONE);
+
         int numOfTables = tablesListAdapter.getCount();
         for (int i = 0; i < numOfTables; i++) {
             //final String tableId = arrayOfTables.get(i).getTableId();
@@ -212,6 +216,7 @@ public class TablesFragment extends SynchronizedLoadFragment {
         if (database == null) {
             return;
         }
+
         arrayOfTables = new ArrayList<GameTable>();
         database.child("tablesForUsers").child(connectedUserId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -297,6 +302,10 @@ public class TablesFragment extends SynchronizedLoadFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View tablesView = inflater.inflate(R.layout.tables_list, container, false);
+
+        ProgressBar progressBar = (ProgressBar) tablesView.findViewById(R.id.tables_progress_bar);
+        progressBar.setVisibility(View.VISIBLE);
+
         connectedUserId = getArguments().getString("connectedUserId");
         database = FirebaseDatabase.getInstance().getReference();
         //getArrayOfTables(getContext().getApplicationContext());
@@ -414,6 +423,14 @@ public class TablesFragment extends SynchronizedLoadFragment {
                         intent.putExtra("EDIT_TABLE_INDEX", pos);
                         intent.putExtra("EDIT_TABLE", selectedTable.toJson());
                         startActivityForResult(intent, 0);
+                    }
+                });
+
+                Button chatButton = (Button) tableOptionsDialog.findViewById(R.id.table_option_chat_button);
+                editButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
                     }
                 });
 

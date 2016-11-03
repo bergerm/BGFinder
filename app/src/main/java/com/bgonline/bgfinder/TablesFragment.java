@@ -1,20 +1,24 @@
 package com.bgonline.bgfinder;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -66,7 +70,8 @@ public class TablesFragment extends SynchronizedLoadFragment {
                     for (DataSnapshot player : dataSnapshot.getChildren()) {
                         GameTable table = (GameTable) tablesListAdapter.getItem(j);
 
-                        String playerId = (String) player.getValue();
+                        //String playerId = (String) player.getValue();
+                        String playerId = (String) player.getKey();
                         switch (count) {
                             case 0:
                                 table.setPlayer1(playerId);
@@ -103,7 +108,8 @@ public class TablesFragment extends SynchronizedLoadFragment {
                     for (DataSnapshot player : dataSnapshot.getChildren()) {
                         final GameTable table = (GameTable) tablesListAdapter.getItem(j);
 
-                        String playerId = (String) player.getValue();
+                        //String playerId = (String) player.getValue();
+                        String playerId = (String) player.getKey();
                         switch (count) {
                             case 0:
                                 table.setPlayer1(playerId);
@@ -190,7 +196,8 @@ public class TablesFragment extends SynchronizedLoadFragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot tableNumber: dataSnapshot.getChildren()) {
-                    String tableId = tableNumber.getValue().toString();
+                    //String tableId = tableNumber.getValue().toString();
+                    String tableId = tableNumber.getKey().toString();
 
                     database.child("tables").child(tableId).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -274,7 +281,7 @@ public class TablesFragment extends SynchronizedLoadFragment {
         //getArrayOfTables(getContext().getApplicationContext());
         arrayOfTables = new ArrayList<GameTable>();
 
-        ListView tablesList = (ListView)tablesView.findViewById(R.id.tables);
+        final ListView tablesList = (ListView)tablesView.findViewById(R.id.tables);
         tablesListAdapter = new TablesListAdapter(container.getContext(), R.layout.game_table, arrayOfTables);
         tablesList.setAdapter(tablesListAdapter);
 
@@ -290,8 +297,130 @@ public class TablesFragment extends SynchronizedLoadFragment {
         tablesList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-                final int itemId = (int) pos;
-                String tableName = tablesListAdapter.getItem((int)itemId).getTableName();
+                final GameTable selectedTable = tablesListAdapter.getItem(pos);
+                final Dialog tableOptionsDialog = new Dialog(getActivity());
+                tableOptionsDialog.setContentView(R.layout.table_options);
+                tableOptionsDialog.setTitle(selectedTable.getTableName());
+
+                Button inviteButton = (Button) tableOptionsDialog.findViewById(R.id.table_option_invite_button);
+                inviteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        database.child("usersInTables").child(selectedTable.getTableId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.getChildrenCount() >= 4) {
+                                    Toast toast = new Toast(getContext());
+                                    toast.setText("Sorry, there is no more room in this table!");
+                                    toast.setDuration(Toast.LENGTH_LONG);
+                                    toast.show();
+                                    return;
+                                }
+
+                                final long newPlayerNumber = dataSnapshot.getChildrenCount() + 1;
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                builder.setTitle("Title");
+
+                                final EditText input = new EditText(getContext());
+                                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                                builder.setView(input);
+
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        database.child("userNames").child(input.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                if (dataSnapshot.getValue() == null) {
+                                                    Toast.makeText(getActivity(), "Sorry, there is no user with the selected name!", Toast.LENGTH_LONG).show();
+                                                    return;
+                                                }
+
+                                                String playerId = dataSnapshot.getValue().toString();
+                                                database.child("usersInTables").child(selectedTable.getTableId()).child(playerId).setValue("");
+                                                database.child("tablesForUsers").child(playerId).child(selectedTable.getTableId()).setValue("");
+                                                switch ((int) newPlayerNumber) {
+                                                    case 1:
+                                                        selectedTable.setPlayer1(playerId);
+                                                        break;
+                                                    case 2:
+                                                        selectedTable.setPlayer2(playerId);
+                                                        break;
+                                                    case 3:
+                                                        selectedTable.setPlayer3(playerId);
+                                                        break;
+                                                    case 4:
+                                                        selectedTable.setPlayer4(playerId);
+                                                        break;
+                                                    default:
+                                                        break;
+                                                }
+                                                tablesListAdapter.notifyDataSetChanged();
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                                Toast.makeText(getActivity(), "Sorry, there is no user with the selected name!", Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                    }
+                                });
+                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                                builder.show();
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                });
+                Button editButton = (Button) tableOptionsDialog.findViewById(R.id.table_option_edit_button);
+                Button leaveButton = (Button) tableOptionsDialog.findViewById(R.id.table_option_leave_button);
+
+                leaveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setMessage("Leave " + selectedTable.getTableName() + "?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                database.child("tablesForUsers").child(connectedUserId).child(selectedTable.getTableId()).removeValue();
+                                database.child("usersInTables").child(selectedTable.getTableId()).child(connectedUserId).removeValue();
+
+                                tablesListAdapter.remove(selectedTable);
+                                tablesListAdapter.notifyDataSetChanged();
+                            }
+                        })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.cancel();
+                                    }
+                                }).show();
+                    }
+                });
+
+                Button cancelButton = (Button) tableOptionsDialog.findViewById(R.id.table_option_cancel_button);
+                cancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        tableOptionsDialog.cancel();
+                    }
+                });
+
+
+
+                /*final int itemId = (int) pos;
+                final String tableName = tablesListAdapter.getItem((int)itemId).getTableName();
                 String dialogString = "Remove " + tableName + "?";
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(dialogString);
@@ -315,6 +444,8 @@ public class TablesFragment extends SynchronizedLoadFragment {
                 });
 
                 builder.show();
+                return true;*/
+                tableOptionsDialog.show();
                 return true;
             }
         });

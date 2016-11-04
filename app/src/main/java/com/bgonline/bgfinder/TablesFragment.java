@@ -217,10 +217,10 @@ public class TablesFragment extends SynchronizedLoadFragment {
             return;
         }
 
-        arrayOfTables = new ArrayList<GameTable>();
-        database.child("tablesForUsers").child(connectedUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child("tablesForUsers").child(connectedUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                tablesListAdapter.clear();
                 for (DataSnapshot tableNumber: dataSnapshot.getChildren()) {
                     //String tableId = tableNumber.getValue().toString();
                     String tableId = tableNumber.getKey().toString();

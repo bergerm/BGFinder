@@ -1,19 +1,28 @@
 package com.bgonline.bgfinder;
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
@@ -21,8 +30,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Map;
+import java.nio.ByteBuffer;
 
 public class AccountFragment extends SynchronizedLoadFragment {
     UserInfo userInfo;
@@ -130,9 +149,46 @@ public class AccountFragment extends SynchronizedLoadFragment {
 
         ImageView userImageView = (ImageView) binding.getRoot().findViewById(R.id.user_info_image);
         UserImage newImage = new UserImage(image.userId, userImageView, getContext());
-        //image.applyOnView(userImageView);
+
+        userImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("image/jpeg");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 0);
+            }
+        });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
+            if (data == null) {
+                Toast.makeText(getActivity(), "There was a problem with the selected picture", Toast.LENGTH_LONG);
+                return;
+            }
+            try {
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference storageRef = storage.getReferenceFromUrl("gs://bgfinder-b11b2.appspot.com");
+                StorageReference imageReference = storageRef.child("userPictures/" + connectedUserId + ".jpg");
+
+                Uri uri = data.getData();
+
+                imageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Log.i("","YAY!");
+                    }
+                });
+            }
+            catch (Exception e) {
+                Log.e("", "WTF?");
+            }
+        }
     }
 
     @Override

@@ -427,10 +427,13 @@ public class TablesFragment extends SynchronizedLoadFragment {
                 });
 
                 Button chatButton = (Button) tableOptionsDialog.findViewById(R.id.table_option_chat_button);
-                editButton.setOnClickListener(new View.OnClickListener() {
+                chatButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        Intent intent = new Intent(getActivity(), ChatActivity.class);
+                        intent.putExtra("CONNECTED_USER_ID", connectedUserId);
+                        intent.putExtra("TABLE_ID", selectedTable.getTableId());
+                        startActivity(intent);
                     }
                 });
 

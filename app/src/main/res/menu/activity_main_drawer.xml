@@ -29,6 +29,10 @@
             android:icon="@drawable/ic_menu_games_list"
             android:title="Games" />
         <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_menu_search"
+            android:title="Search Players" />
+        <item
             android:id="@+id/nav_friends"
             android:icon="@drawable/ic_menu_players"
             android:title="Friends" />

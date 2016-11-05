@@ -2,10 +2,9 @@ package com.bgonline.bgfinder;
 
 import com.google.gson.Gson;
 
-/**
- * Created by Manu on 9/17/2016.
- */
-public class UserInfo {
+import java.io.Serializable;
+
+public class UserInfo implements Serializable{
     private String userId;
     private String email;
     private String description;
@@ -15,6 +14,7 @@ public class UserInfo {
     private String country;
     private String city;
     private String birthDate;
+    private String userName;
 
 
     public String getUserId() {
@@ -31,6 +31,14 @@ public class UserInfo {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getDescription() {

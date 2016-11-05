@@ -26,6 +26,7 @@
         <activity android:name=".NewTableActivity"></activity>
         <activity android:name=".EditTableActivity"></activity>
         <activity android:name=".ChatActivity"></activity>
+        <activity android:name=".UsersListActivity"></activity>
     </application>
 
 </manifest>

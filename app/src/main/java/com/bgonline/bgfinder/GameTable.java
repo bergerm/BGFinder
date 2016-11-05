@@ -182,4 +182,11 @@ public class GameTable implements Serializable{
         Gson gson = new Gson();
         return gson.fromJson(json, GameTable.class);
     }
+
+    public boolean containsPlayer(String playerId) {
+        return player1Id.equals(playerId) ||
+                player2Id.equals(playerId) ||
+                player3Id.equals(playerId) ||
+                player4Id.equals(playerId);
+    }
 }

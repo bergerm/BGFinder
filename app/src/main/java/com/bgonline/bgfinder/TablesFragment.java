@@ -367,9 +367,20 @@ public class TablesFragment extends SynchronizedLoadFragment {
                                                     return;
                                                 }
 
+                                                if (dataSnapshot.getValue().toString().equals(connectedUserId)) {
+                                                    Toast.makeText(getActivity(), "You cannot invite yourself to a table! Good try!", Toast.LENGTH_LONG).show();
+                                                    return;
+                                                }
+
+                                                if (selectedTable.containsPlayer(dataSnapshot.getValue().toString())) {
+                                                    Toast.makeText(getActivity(), "This user is already in the table!", Toast.LENGTH_LONG).show();
+                                                    return;
+                                                }
+
                                                 String playerId = dataSnapshot.getValue().toString();
                                                 database.child("usersInTables").child(selectedTable.getTableId()).child(playerId).setValue("");
                                                 database.child("tablesForUsers").child(playerId).child(selectedTable.getTableId()).setValue("");
+                                                database.child("pendingInvitations").child(playerId).child(selectedTable.getTableId()).setValue(connectedUserId);
                                                 switch ((int) newPlayerNumber) {
                                                     case 1:
                                                         selectedTable.setPlayer1(playerId);
@@ -392,7 +403,7 @@ public class TablesFragment extends SynchronizedLoadFragment {
 
                                             @Override
                                             public void onCancelled(DatabaseError databaseError) {
-                                                Toast.makeText(getActivity(), "Sorry, there is no user with the selected name!", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getActivity(), "Sorry, there seems to be a problem with the connection", Toast.LENGTH_LONG).show();
                                             }
                                         });
                                     }

@@ -1,8 +1,10 @@
 package com.bgonline.bgfinder;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -39,12 +41,15 @@ public class UsersListActivity extends AppCompatActivity {
         ListView listView = new ListView(this);
         listView.setAdapter(userInfoListAdapter);
 
-        /*listView.setOnClickListener(new View.OnClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                //start user info activity here
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                UserInfo userInfo = (UserInfo) adapterView.getItemAtPosition(position);
+                Intent intent = new Intent(UsersListActivity.this, ShowUserInfoActivity.class);
+                intent.putExtra("USER", userInfo);
+                startActivity(intent);
             }
-        });*/
+        });
 
         searchResultLayout.addView(listView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 

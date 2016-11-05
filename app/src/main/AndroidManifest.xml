@@ -27,6 +27,8 @@
         <activity android:name=".EditTableActivity"></activity>
         <activity android:name=".ChatActivity"></activity>
         <activity android:name=".UsersListActivity"></activity>
+        <activity android:name=".ShowUserInfoActivity"></activity>
+        <activity android:name=".ShowUserGamesActivity"></activity>
     </application>
 
 </manifest>

@@ -100,8 +100,8 @@ public class MainActivity extends AppCompatActivity
                 View navHeader = navView.getHeaderView(0);
 
                 RoundedImageView currentUserImageView = (RoundedImageView) navHeader.findViewById(R.id.currentUserImage);
-                TextView currentUserEmail = (TextView) navHeader.findViewById(R.id.logged_user);
-                TextView currentUserString = (TextView) navHeader.findViewById(R.id.logged_user_string);
+                final TextView currentUserEmail = (TextView) navHeader.findViewById(R.id.logged_user);
+                final TextView currentUserString = (TextView) navHeader.findViewById(R.id.logged_user_string);
 
                 if (connectedUser != null) {
                     // User is signed in
@@ -111,14 +111,26 @@ public class MainActivity extends AppCompatActivity
 
                     currentUserImage = new UserImage(connectedUser.getUid(),currentUserImageView,getApplicationContext());
                     currentUserEmail.setText(connectedUser.getEmail());
-                    currentUserString.setText("User description should go here!");
+                    //currentUserString.setText("User description should go here!");
+                    currentUserString.setText("");
+                    database = FirebaseDatabase.getInstance().getReference();
+                    database.child("users").child(connectedUser.getUid()).child("description").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            currentUserString.setText(dataSnapshot.getValue().toString());
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
 
                     if (!initialized) {
                         onChangeFragment(new SummaryFragment());
                     }
                     initialized = true;
 
-                    database = FirebaseDatabase.getInstance().getReference();
                     pendingInvitationsListener = database.child("pendingInvitations").child(connectedUser.getUid()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {

@@ -181,7 +181,8 @@ public class AccountFragment extends SynchronizedLoadFragment {
                 imageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Log.i("","YAY!");
+                        ImageView userImageView = (ImageView) binding.getRoot().findViewById(R.id.user_info_image);
+                        UserImage newImage = new UserImage(connectedUserId, userImageView, getContext());
                     }
                 });
             }

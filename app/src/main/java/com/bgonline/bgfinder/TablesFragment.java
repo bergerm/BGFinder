@@ -350,7 +350,7 @@ public class TablesFragment extends SynchronizedLoadFragment {
                                 final long newPlayerNumber = dataSnapshot.getChildrenCount() + 1;
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                builder.setTitle("Title");
+                                builder.setTitle("Invite user");
 
                                 final EditText input = new EditText(getContext());
                                 input.setInputType(InputType.TYPE_CLASS_TEXT);

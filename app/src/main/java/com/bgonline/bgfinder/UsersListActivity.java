@@ -68,24 +68,29 @@ public class UsersListActivity extends AppCompatActivity {
                     database.child("games").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            boolean addToArray = false;
+                            boolean addToArray = true;
                             String userName = user.child("userName").getValue().toString();
                             String userCity = user.child("city").getValue().toString();
 
-                            if (!searchUserName.isEmpty() && userName.toLowerCase().contains(searchUserName)) {
-                                addToArray = true;
+                            if (!searchUserName.isEmpty() && !userName.toLowerCase().contains(searchUserName)) {
+                                addToArray = false;
                             }
 
-                            if (!addToArray && !searchUserCity.isEmpty() && userCity.toLowerCase().contains(searchUserCity)) {
-                                addToArray = true;
+                            if (!addToArray && !searchUserCity.isEmpty() && !userCity.toLowerCase().contains(searchUserCity)) {
+                                addToArray = false;
                             }
 
                             if (!addToArray && !searchUserGame.isEmpty()) {
+                                boolean hasSpecificGame = false;
                                 for (DataSnapshot game : dataSnapshot.getChildren()) {
                                     if (game.getValue().toString().toLowerCase().contains(searchUserGame)) {
-                                        addToArray = true;
+                                        hasSpecificGame = true;
                                         break;
                                     }
+                                }
+
+                                if (!hasSpecificGame) {
+                                    addToArray = false;
                                 }
                             }
 
